@@ -200,8 +200,8 @@ html, body, #root {
 .hover\:rotate-15:hover { transform: rotate(15deg); }
 .hover\:shadow-xl:hover { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
 .hover\:shadow-2xl:hover { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
-.hover\:from-red-600:hover { /* This would require a custom gradient change */ }
-.hover\:to-pink-600:hover { /* This would require a custom gradient change */ }
+.hover\:from-red-600:hover 
+.hover\:to-pink-600:hover
 .hover\:text-gray-800:hover { color: #1f2937; }
 .hover\:text-gray-900:hover { color: #111827; }
 .hover\:text-blue-600:hover { color: #2563eb; }
@@ -209,8 +209,8 @@ html, body, #root {
 .hover\:text-red-800:hover { color: #991b1b; }
 .hover\:bg-red-600:hover { background-color: #dc2626; }
 .hover\:bg-yellow-200:hover { background-color: #fef3c7; }
-.hover\:from-green-600:hover { /* Custom gradient */ }
-.hover\:to-teal-600:hover { /* Custom gradient */ }
+.hover\:from-green-600:hover
+.hover\:to-teal-600:hover 
 .group:hover .group-hover\:translate-x-1 { transform: translateX(0.25rem); }
 .group:hover .group-hover\:w-full { width: 100%; }
 .group:hover .group-hover\:opacity-20 { opacity: 0.2; }
@@ -770,4 +770,161 @@ img {
 /* Utility for hidden elements */
 .hidden {
     display: none;
+}
+
+/* Add this to your src/index.css file */
+
+/* Basic modal overlay styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black backdrop */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 50; /* Ensure it's on top of other content */
+  opacity: 0; /* Start hidden for fade-in animation */
+  transition: opacity 0.3s ease-out; /* Fade-in transition */
+}
+
+/* Modal content box styles */
+.modal-box {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 0.5rem; /* Equivalent to Tailwind's rounded-lg */
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Equivalent to Tailwind's shadow-xl */
+  max-width: 32rem; /* Equivalent to Tailwind's max-w-lg (512px) */
+  width: 100%;
+  position: relative;
+  transform: scale(0.95); /* Start slightly smaller for scale-in animation */
+  transition: transform 0.3s ease-out; /* Scale-in transition */
+}
+
+/* Styles for the close button within the modal */
+.modal-close {
+  position: absolute;
+  top: 0.75rem; /* Equivalent to Tailwind's top-3 */
+  right: 0.75rem; /* Equivalent to Tailwind's right-3 */
+  font-size: 2rem; /* Equivalent to Tailwind's text-3xl (32px) */
+  color: #6b7280; /* Equivalent to Tailwind's text-gray-500 */
+  cursor: pointer;
+  line-height: 1; /* Adjusts vertical alignment of the 'x' */
+  padding: 0.25rem; /* Small padding to make it easier to click */
+  border-radius: 0.25rem;
+  transition: color 0.2s ease-in-out;
+}
+
+.modal-close:hover {
+  color: #1f2937; /* Equivalent to Tailwind's hover:text-gray-800 */
+}
+
+/* Classes added by JavaScript for animation */
+.modal-overlay.opacity-100 {
+  opacity: 1;
+}
+
+.modal-box.scale-100 {
+  transform: scale(1);
+}
+
+.modal-box.scale-95 {
+  transform: scale(0.95);
+}
+
+/* Ensure Font Awesome (if used for other icons) is still working */
+.fas, .fab {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+}
+/* Add this to your global CSS file (e.g., src/index.css) */
+
+/* Ensure basic flex behavior for workflow steps */
+.workflow-step {
+  display: flex;
+  align-items: center; /* Vertically center the icon and text */
+  gap: 1.5rem; /* Space between icon and text (tailwind equivalent gap-6) */
+  margin-bottom: 3rem; /* Space between steps (tailwind equivalent mb-12) */
+  width: 100%;
+  max-width: 800px; /* Limit width to keep content readable */
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1.5rem; /* Padding inside each step box */
+  border-radius: 0.75rem; /* rounded-xl */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* subtle shadow */
+  position: relative; /* For animation and z-index */
+  z-index: 10; /* Ensure steps are above the vertical line */
+  background-color: white; /* Default background for steps */
+  transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+}
+
+.workflow-step:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Styling for the step number icon */
+.step-icon {
+  flex-shrink: 0; /* Prevent the icon from shrinking */
+  width: 3.5rem; /* Fixed width (tailwind w-14) */
+  height: 3.5rem; /* Fixed height (tailwind h-14) */
+  border-radius: 9999px; /* Make it perfectly circular (rounded-full) */
+  background-color: #FF9898; /* A shade of your red/pink for the number circle */
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.75rem; /* text-3xl */
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 20; /* Ensure icon is above step box */
+}
+
+/* Styling for the text content */
+.text-content {
+  flex-grow: 1; /* Allow text content to take up available space */
+  padding-left: 1rem; /* Space after the number circle */
+}
+
+/* Specific styles for reversed steps (alternating layout) */
+.workflow-step.reversed {
+  flex-direction: row-reverse; /* Swap the order of icon and text */
+}
+
+/* Adjust text alignment for reversed steps if needed */
+.workflow-step.reversed .text-content {
+  padding-left: 0;
+  padding-right: 1rem;
+}
+
+
+/* Animations */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out forwards;
+}
+
+/* Dynamic delays */
+.delay-200 { animation-delay: 0.2s; }
+.delay-400 { animation-delay: 0.4s; }
+.delay-600 { animation-delay: 0.6s; }
+/* Add more delay classes as needed if you have more than 3 sections */
+
+/* If you want the vertical line to be more prominent or different: */
+.how-we-work-section .relative .absolute {
+  /* This is the vertical line in HowWeWork.jsx */
+  background-color: #FFCCBC; /* A lighter shade for the line */
+  width: 3px; /* Make the line a bit thicker */
 }

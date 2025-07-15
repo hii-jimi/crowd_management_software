@@ -61,15 +61,15 @@ function App() {
   const renderPage = () => {
     switch (currentPage) {
       case 'home':
-        return <Home />;
+        return <Home navigateTo={navigateTo} />;
       case 'about':
         return <About />;
       case 'how-we-work':
-        return <HowWeWork />;
+        return <HowWeWork navigateTo={navigateTo} />;
       case 'contact':
         return <Contact />;
       default:
-        return <Home />; // Fallback to Home page
+        return <Home navigateTo={navigateTo}/>; // Fallback to Home page
     }
   };
 

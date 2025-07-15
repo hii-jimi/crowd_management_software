@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react';
 import FeatureCard from '../components/FeatureCard';
 import Modal from '../components/Modal';
 
-const Home = () => {
+
+const Home = ({ navigateTo }) => {
   // State to manage modal visibility and content
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState({ title: '', description: '' });
@@ -112,7 +113,7 @@ const Home = () => {
             <h2 className="workflow-title">A Smarter Way To Manage Crowd</h2>
             <p className="workflow-subtitle">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur beatae rem saepe dignissimos doloribus at, voluptatem temporibus sit quod odio quam suscipit vel sequi perferendis maxime, pariatur corporis rerum minima!</p>
             <div className="cta-container">
-              <button className="cta-button">Get Started Today</button>
+              <button className="cta-button"onClick={() => navigateTo('contact')}> Get Started Today</button>
             </div>
           </div>
 
