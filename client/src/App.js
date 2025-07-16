@@ -1,27 +1,24 @@
 // src/App.js
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import About from './pages/About';
 import HowWeWork from './pages/HowWeWork';
-import Contact from './pages/Contact';
-import Navbar from './components/Navbar'; // Your existing Navbar (not modified)
-import Footer from './components/Footer'; // Your existing Footer
-import DashboardPage from './pages/DashboardPage'; // Import the DashboardPage
-import './index.css'; // Import global styles including custom CSS
-
+import Contact from './pages/Contact'; // Correctly import Contact from pages
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import DashboardLayout from './pages/DashboardPage'; // Corrected import: aliasing default export to DashboardLayout
+import ZoningPage from './pages/ZoningPage'; // Import the new ZoningPage
+import './index.css'; // Import global styles
 
 // --- Main App Component ---
 function App() {
-    // State to manage the current page, defaulting to 'home'
-    const [currentPage, setCurrentPage] = useState('home');
     // State to manage the visibility of the mobile navigation menu
     const [isNavOpen, setIsNavOpen] = useState(false);
+    const location = useLocation(); // Hook to get current location
 
-    // Function to handle navigation to different pages (landing or dashboard)
-    const navigateTo = (page) => {
-        setCurrentPage(page);
-        setIsNavOpen(false); // Close mobile nav on page change
-    };
+    // Determine if the current route is a dashboard or zoning route
+    const isDashboardRoute = location.pathname.startsWith('/dashboard') || location.pathname.startsWith('/zoning');
 
     // Effect to handle scroll-based animations and progress bar for the entire app
     useEffect(() => {
@@ -60,49 +57,65 @@ function App() {
         };
     }, []); // Empty dependency array ensures this runs once on mount
 
-    // Render the appropriate content based on currentPage state
-    const renderContent = () => {
-        if (currentPage === 'dashboard') {
-            // If on the dashboard page, render the DashboardPage component
-            return <DashboardPage />;
-        } else {
-            // Otherwise, render the landing page structure
-            return (
-                <>
-                    {/* Navbar component, passing navigation function and mobile menu state */}
-                    {/* The Navbar component itself is not modified, it only receives props */}
-                    <Navbar navigateTo={navigateTo} isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen} />
-
-                    {/* Main content area where pages will be rendered */}
-                    <main className="main-content">
-                        {(() => {
-                            switch (currentPage) {
-                                case 'home':
-                                    return <Home navigateTo={navigateTo} />; // Ensure navigateTo is passed to Home
-                                case 'about':
-                                    return <About />;
-                                case 'how-we-work':
-                                    return <HowWeWork navigateTo={navigateTo} />; // Pass navigateTo if HowWeWork uses it
-                                case 'contact':
-                                    return <Contact />;
-                                default:
-                                    return <Home navigateTo={navigateTo}/>; // Fallback to Home page
-                            }
-                        })()}
-                    </main>
-
-                    {/* Footer component */}
-                    <Footer />
-                </>
-            );
-        }
-    };
-
     return (
-        <div className="app-container"> {/* Custom class for overall app container */}
-            {renderContent()}
+        <div className="app-container">
+            {/* Conditionally render Navbar based on route */}
+            {!isDashboardRoute && <Navbar isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen} />}
+            <main className="main-content">
+                <Routes>
+                    <Route path="/" element={
+                        <section className="intro">
+                            <h1>Welcome to Jana Suraksha</h1>
+                            <p>Your ultimate solution for advanced crowd management and safety monitoring.</p>
+                            <Link to="/dashboard" className="cta-button">
+                                Go to Dashboard
+                                <svg xmlns="http://www.w3.org/2000/svg" className="btn-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                </svg>
+                            </Link>
+                            <div className="features-grid">
+                                <div className="feature-card animate-fade-in-up">
+                                    <div className="icon-circle">📊</div>
+                                    <h3>Real-time Analytics</h3>
+                                    <p>Monitor crowd density and movement with live data.</p>
+                                </div>
+                                <div className="feature-card animate-fade-in-up delay-200">
+                                    <div className="icon-circle">🚨</div>
+                                    <h3>Instant Alerts</h3>
+                                    <p>Receive immediate notifications for critical situations.</p>
+                                </div>
+                                <div className="feature-card animate-fade-in-up delay-400">
+                                    <div className="icon-circle">🗺️</div>
+                                    <h3>Interactive Zoning</h3>
+                                    <p>Define and manage specific zones for detailed monitoring.</p>
+                                </div>
+                            </div>
+                        </section>
+                    } />
+                    {/* Dashboard and Zoning routes */}
+                    <Route path="/dashboard/*" element={<DashboardLayout />} />
+                    <Route path="/zoning" element={<ZoningPage />} />
+
+                    {/* Other main application routes */}
+                    <Route path="/home" element={<Home />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/how-we-work" element={<HowWeWork />} />
+                    <Route path="/contact" element={<Contact />} /> {/* Correctly renders the Contact page */}
+                </Routes>
+            </main>
+            {/* Conditionally render Footer based on route */}
+            {!isDashboardRoute && <Footer />}
         </div>
     );
 }
 
-export default App;
+// Wrap App with Router
+function AppWrapper() {
+    return (
+        <Router>
+            <App />
+        </Router>
+    );
+}
+
+export default AppWrapper;
